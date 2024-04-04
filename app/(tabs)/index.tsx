@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { Image } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { useMovieStore } from "@/store/movies-store";
@@ -18,17 +18,17 @@ export default function TabOneScreen() {
       {status === "loading" ? (
         <Text>Loading...</Text>
       ) : (
-        <View>
+        <ScrollView>
           {mediaList?.results?.map((title) => (
-            <View key={title.id}>
+            <View key={title.id} >
               <Text>{title.titleText.text}</Text>
               <Image
-                style={{ width: 100, height: 100 }}
+                style={styles.image}
                 source={{ uri: title.primaryImage?.url }}
               ></Image>
             </View>
           ))}
-        </View>
+        </ScrollView>
       )}
     </View>
   );
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     alignItems: "center",
-    // justifyContent: 'center',
     marginTop: 4,
   },
   title: {
@@ -51,4 +50,23 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
+  image: {
+    width: 300,
+    height: 300,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    }
+  },
+
+  // grid for the view of the movies, 4 cols
+  viewGrid:{
+
+    
+  
+  }
+  
 });
+

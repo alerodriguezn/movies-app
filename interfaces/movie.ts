@@ -75,3 +75,7 @@ export enum ID {
 export enum Text {
     Short = "Short",
 }
+
+//Rating
+
+//
