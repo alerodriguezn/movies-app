@@ -77,5 +77,15 @@ export enum Text {
 }
 
 //Rating
+export interface Rating {
+    results: ComponentsRanting;
+}
+
+export interface ComponentsRanting {
+    tconst:        string;
+    averageRating: number;
+    numVotes:      number;
+}
+
 
 //
