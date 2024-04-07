@@ -1,72 +1,49 @@
-import { useEffect } from "react";
-import { StyleSheet, ScrollView } from "react-native";
-import { Image } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  Alert,
+  SafeAreaView,
+} from "react-native";
 import { Text, View } from "@/components/Themed";
 import { useMovieStore } from "@/store/movies-store";
+import { StatusBar } from "expo-status-bar";
+import useAuthStore from "@/store/user-store";
+import { TitleList } from '../../components/titles/TitleList';
+import { getAuth } from "firebase/auth";
+import { router } from "expo-router";
 
 export default function TabOneScreen() {
   const mediaList = useMovieStore((state) => state.mediaList);
   const fetchTitles = useMovieStore((state) => state.fetchTitles);
-  const status = useMovieStore((state) => state.status);
+  const fetchTopBoxOffice = useMovieStore((state) => state.fetchTopBoxOffice);
+  const topBoxOffice = useMovieStore((state) => state.topBoxOffice);
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
     fetchTitles();
+    fetchTopBoxOffice();
   }, []);
 
+ 
+
   return (
-    <View style={styles.container}>
-      {status === "loading" ? (
-        <Text>Loading...</Text>
-      ) : (
-        <ScrollView>
-          {mediaList?.results?.map((title) => (
-            <View key={title.id} >
-              <Text>{title.titleText.text}</Text>
-              <Image
-                style={styles.image}
-                source={{ uri: title.primaryImage?.url }}
-              ></Image>
-            </View>
-          ))}
-        </ScrollView>
-      )}
+    <View className="flex-1 bg-[#030418] ">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 10 }}
+        className=""
+      >
+   
+
+          <TitleList data={mediaList} title="Top Series" />
+          <TitleList data={topBoxOffice} title="Películas Más Taquilleras" />
+      
+
+      </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: "flex",
-    alignItems: "center",
-    marginTop: 4,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-  image: {
-    width: 300,
-    height: 300,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    }
-  },
-
-  // grid for the view of the movies, 4 cols
-  viewGrid:{
-
-    
-  
-  }
-  
-});
-

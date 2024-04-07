@@ -1,11 +1,16 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
 
+import { Link, Tabs, router } from 'expo-router';
+import { Pressable } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import { useNavigation } from 'expo-router';
+import { getAuth } from 'firebase/auth';
+import useAuthStore from '@/store/user-store';
+
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -16,8 +21,12 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
+  const colorScheme = useColorScheme();
+  
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  
   return (
     <Tabs
       screenOptions={{
@@ -29,10 +38,10 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
+          title: 'Movies',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/login" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
@@ -41,6 +50,15 @@ export default function TabLayout() {
                     color={Colors[colorScheme ?? 'light'].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
+                )}
+              </Pressable>
+            </Link>
+          ),
+          headerLeft: () => (
+            <Link href="/login" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <AntDesign name="menufold" size={25} color="white" style={{ marginLeft: 15}} />
                 )}
               </Pressable>
             </Link>
