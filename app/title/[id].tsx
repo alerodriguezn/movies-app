@@ -39,7 +39,7 @@ export default function Page() {
           borderRadius: 20,
         }}
       />
-      {/* Grid 2 */}
+ 
       <View className="flex flex-row flex-wrap gap-2 mt-1 pl-4">
         {title?.genres.genres.map((genre) => (
           <View key={genre.id} className="border-2 rounded-md p-[2px]  border-amber-500 ">
@@ -65,8 +65,8 @@ export default function Page() {
 
       <View className="border-y-2 border-slate-800 mt-4 ">
         <Text className=" text-2xl pl-4 mt-4 font-bold text-center text-amber-500  ">Movie Cast</Text>
-        {extendedCast?.results.cast.edges.map((cast) => (
-          <View className="flex flex-row items-center justify-start gap-8 p-4 border-b-2 border-slate-900">
+        {extendedCast?.results.cast.edges.map((cast, index) => (
+          <View key={index} className="flex flex-row items-center justify-start gap-8 p-4 border-b-2 border-slate-900">
             <Image
                 className="w-16 h-16 rounded-full"
                 source={{ uri: cast?.node?.name?.primaryImage?.url }}
