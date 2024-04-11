@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { MediaList, Title } from "@/interfaces/movie";
+import { MediaList, Title, TitleResult } from "@/interfaces/movie";
 import axiosClient from "@/config/axiosClient";
-import { ActorsList,Actor } from "@/interfaces/actor";
+import { ActorsList, Actor } from "@/interfaces/actor";
 import { ExtendedCast } from "@/interfaces/cast";
+import { Seasons } from "@/interfaces/serie";
 
 interface State {
   mediaList: MediaList;
@@ -14,6 +15,9 @@ interface State {
   fetchTopBoxOffice: () => void;
   getTitleInformation: (id: string) => Title | undefined;
   getExtendedCast: (id: string) => Promise<ExtendedCast>;
+  getTitleInfo: (id: string) => Promise<Title>;
+  getSeasonsInfo: (id: string) => Promise<Seasons>;
+  getEpisodeInfo: (id: string) => Promise<Title>;
 }
 
 export const useMovieStore = create<State>()((set, get) => ({
@@ -26,7 +30,6 @@ export const useMovieStore = create<State>()((set, get) => ({
     const { data } = await axiosClient.get<MediaList>("/titles/random", {
       params: {
         list: "top_rated_series_250",
-        info: "base_info"
       },
     });
     set({ mediaList: data });
@@ -36,37 +39,56 @@ export const useMovieStore = create<State>()((set, get) => ({
     set({ status: "loading" });
     const { data } = await axiosClient.get<MediaList>("/titles/random", {
       params: {
-        list: "top_boxoffice_last_weekend_10",
-        info: "base_info"
+        list: "top_boxoffice_200",
       },
     });
     set({ topBoxOffice: data });
     set({ status: "success" });
   },
   getTitleInformation: (id: string) => {
-    const movies = get().mediaList.results;
-    const movie = movies.find((m) => m.id === id);
-    return movie;
+    const title = get().mediaList.results.find((title) => title.id === id);
+    return title;
   },
 
   getExtendedCast: async (id: string) => {
-
     const { data } = await axiosClient.get<ExtendedCast>(`/titles/${id}`, {
       params: {
-        info: "extendedCast"
+        info: "extendedCast",
       },
     });
     return data;
-    
   },
 
+  getTitleInfo: async (id: string) => {
+    const { data } = await axiosClient.get<TitleResult>(`/titles/${id}`, {
+      params: {
+        info: "base_info",
+      },
+    });
+    return data.results;
+  },
 
-  fetchActor: async() => {
-
+  getSeasonsInfo: async (id: string) => {
+      const { data } = await axiosClient.get<Seasons>(`/titles/series/${id}`, {
+        params: {
+          info: "base_info",
+        },
+      })
+      return data;
+  },
+  getEpisodeInfo: async (id: string) => {
+    const { data } = await axiosClient.get<TitleResult>(`/titles/episode/${id}`, {
+      params: {
+        info: "base_info",
+      },
+    });
+    const episode = data.results;
+    return episode;
+  },
+  fetchActor: async () => {
     set({ status: "loading" });
     const { data } = await axiosClient.get<ActorsList>("/actors/random");
     set({ actors: data.results });
     set({ status: "success" });
-    
-  }
+  },
 }));

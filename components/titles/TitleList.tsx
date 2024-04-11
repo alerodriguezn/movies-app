@@ -40,20 +40,39 @@ interface MovieCardProps {
 
 const MovieCard = ({ item }: MovieCardProps) => {
 
+  
   const handlePress = () => {
-    router.push(`/title/${item.id}`);
+    const url = item.titleType.isSeries ? 'serie' : 'title';
+    router.push(`/${url}/${item.id}`);
+    
   }
 
   return (
     <Pressable onPress={handlePress}>
-      <Image
-        source={{ uri: item.primaryImage?.url }}
-        style={{
-          width: width * 0.6,
-          height: height * 0.4,
-          borderRadius: 20,
-        }}
-      />
+      {
+        item.primaryImage?.url ? (
+          <Image
+            source={{ uri: item.primaryImage?.url }}
+            style={{
+              width: width * 0.6,
+              height: height * 0.4,
+              borderRadius: 20,
+            }}
+            alt="Hello"
+          />
+        ) : (
+          <View
+            style={{
+              width: width * 0.6,
+              height: height * 0.4,
+              borderRadius: 20,
+              backgroundColor: "gray",
+            }}
+          />
+
+        )
+      }
+
     </Pressable>
   );
 };

@@ -5,6 +5,10 @@ export interface MediaList {
     results: Title[];
 }
 
+export interface TitleResult {
+    results: Title;
+}
+
 export interface Title {
     _id:               string;
     id:                string;

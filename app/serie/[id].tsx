@@ -1,30 +1,42 @@
 import { useMovieStore } from "@/store/movies-store";
 import { useLocalSearchParams } from "expo-router";
-import { Text, Image, Dimensions, View, ScrollView } from "react-native";
+import {
+  Text,
+  Image,
+  Dimensions,
+  View,
+  ScrollView,
+  Pressable,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { ExtendedCast } from "@/interfaces/cast";
 import { Title } from "@/interfaces/movie";
-import Carousel from "react-native-reanimated-carousel";
+import { Seasons } from "@/interfaces/serie";
 import { EpisodeItem } from "@/components/series/EpisodeItem";
 
 let { width, height } = Dimensions.get("window");
 
 export default function Page() {
- 
+  const { id } = useLocalSearchParams();
+
   const getExtendedCast = useMovieStore((state) => state.getExtendedCast);
   const getTitleInfo = useMovieStore((state) => state.getTitleInfo);
- 
-  const { id } = useLocalSearchParams();
+  const getSeasonsInfo = useMovieStore((state) => state.getSeasonsInfo);
+
   const [extendedCast, setExtendedCast] = useState<ExtendedCast>();
   const [title, setTitle] = useState<Title>();
-  
+  const [seasons, setSeasons] = useState<Seasons>();
+
   useEffect(() => {
     getExtendedCast(id as string).then((data) => {
       setExtendedCast(data);
     });
     getTitleInfo(id as string).then((data) => {
       setTitle(data);
+    });
+    getSeasonsInfo(id as string).then((data) => {
+      setSeasons(data);
     });
   }, [id]);
 
@@ -55,7 +67,6 @@ export default function Page() {
         ))}
       </View>
 
-
       <Text className="text-center text-white font-bold mt-4">
         {" "}
         {title?.releaseDate.year} • {title?.titleType.text}{" "}
@@ -71,8 +82,21 @@ export default function Page() {
         </Text>
         <AntDesign name="star" size={18} color="yellow" />
       </View>
-
-     
+      <Text className="text-2xl text-white font-bold pl-4 mt-4">Seasons:</Text>
+      <ScrollView
+        className="w-full h-44 pl-4"
+       
+        contentContainerStyle={{ paddingBottom: 10 }}
+      >
+        {seasons?.results.map((season, index) => (
+          <View key={season.tconst} className="text-white flex flex-row justify-between items-center mr-4 p-2">
+           
+            <Pressable className="bg-amber-600 p-1 rounded-md w-full ">
+              <Text className="text-white font-semibold text-center"  >Season {season.seasonNumber} - Episode {season.episodeNumber}</Text>
+            </Pressable>
+          </View>
+        ))}
+      </ScrollView>
 
       <View className="border-y-2 border-slate-800 mt-4 ">
         <Text className=" text-2xl pl-4 mt-4 font-bold text-center text-amber-500  ">
