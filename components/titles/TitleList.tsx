@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "../Themed";
 // import Carousel from 'react-native-snap-carousel';
 import Carousel from "react-native-reanimated-carousel";
-import { Image, TouchableWithoutFeedback, Dimensions } from "react-native";
+import { Image, TouchableWithoutFeedback, Dimensions, Pressable } from "react-native";
 import { MediaList, Title } from "@/interfaces/movie";
 import { router } from "expo-router";
 
@@ -45,7 +45,7 @@ const MovieCard = ({ item }: MovieCardProps) => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={handlePress}>
+    <Pressable onPress={handlePress}>
       <Image
         source={{ uri: item.primaryImage?.url }}
         style={{
@@ -54,6 +54,6 @@ const MovieCard = ({ item }: MovieCardProps) => {
           borderRadius: 20,
         }}
       />
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };

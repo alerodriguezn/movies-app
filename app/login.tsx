@@ -1,20 +1,17 @@
 import { useState } from "react";
+// @ts-ignore
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  initializeAuth,
-  User,
-  getReactNativePersistence,
-  Auth,
-} from "firebase/auth";
-import { initializeApp, getApp, getApps } from "@firebase/app";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-import { firebaseConfig } from "@/utils/firebase-config";
-import { Alert, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+} from "@firebase/auth";
+
+import { Alert, Pressable, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { Text, View } from "@/components/Themed";
 import useAuthStore from "@/store/user-store";
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
+import { auth } from "@/utils/firebase-config";
+
+
 
 export default function ModalScreen() {
   const setSession = useAuthStore((state) => state.setSession);
@@ -22,26 +19,14 @@ export default function ModalScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  let app;
-  let auth: Auth;
-  if (!getApps().length) {
-    try {
-      app = initializeApp(firebaseConfig);
-      auth = initializeAuth(app, {
-        persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-      });
-    } catch (err) {
-      console.log("error initializing");
-    }
-  }
-  app = getApp();
+
 
   const handleCreateAccount = () => {
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         setSession(user);
-        console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -55,7 +40,9 @@ export default function ModalScreen() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+
         setSession(user);
+        router.push("/(tabs)");
         // ...
       })
       .catch((error) => {
@@ -65,26 +52,34 @@ export default function ModalScreen() {
       });
   };
 
+  //If user is logged in, redirect to home
+  if( auth.currentUser ) {
+    console.log(auth.currentUser);
+    return <Redirect href={"/(tabs)"}/>
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
       <TextInput
+        className="text-black"
         style={styles.input}
         onChangeText={(text) => setEmail(text)}
         placeholder="Ingresa tu email"
       />
       <TextInput
+        className="text-black"
         style={styles.input}
         onChangeText={(text) => setPassword(text)}
         placeholder="Ingresa tu contraseña"
         secureTextEntry={true}
       />
-      <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
+      <Pressable style={styles.button} onPress={handleCreateAccount}>
         <Text style={styles.textButton}>Crear Cuenta</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+      </Pressable>
+      <Pressable style={styles.button} onPress={handleSignIn}>
         <Text style={styles.textButton}>Iniciar Sesión</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

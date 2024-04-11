@@ -12,6 +12,10 @@ export default function Page() {
   const [extendedCast, setExtendedCast] = useState<ExtendedCast>();
 
   useEffect(() => {
+    console.log("Movie Page Mounted");
+  },[])
+
+  useEffect(() => {
     if (id) {
       useMovieStore
         .getState()
