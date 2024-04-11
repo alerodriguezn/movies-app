@@ -6,18 +6,35 @@ import { ActorsList, Actor } from "@/interfaces/actor";
 import { ExtendedCast } from "@/interfaces/cast";
 import { Seasons } from "@/interfaces/serie";
 
+export interface TrailerResponse {
+  results: Trailer;
+}
+
+export interface Trailer {
+  _id:     string;
+  id:      string;
+  trailer: string;
+}
+
+
 interface State {
   mediaList: MediaList;
   topBoxOffice: MediaList;
+  //upcoming: MediaList;
+  //top....: MediaList;
+
   actors: Actor[];
   status: "idle" | "loading" | "success" | "error";
   fetchTitles: () => void;
   fetchTopBoxOffice: () => void;
+  //fetchTop...: () => void;
+  //fetchUpcoming: () => void;
   getTitleInformation: (id: string) => Title | undefined;
   getExtendedCast: (id: string) => Promise<ExtendedCast>;
   getTitleInfo: (id: string) => Promise<Title>;
   getSeasonsInfo: (id: string) => Promise<Seasons>;
   getEpisodeInfo: (id: string) => Promise<Title>;
+  getTrailerById: (id: string) => Promise<string>;
 }
 
 export const useMovieStore = create<State>()((set, get) => ({
@@ -45,6 +62,8 @@ export const useMovieStore = create<State>()((set, get) => ({
     set({ topBoxOffice: data });
     set({ status: "success" });
   },
+  // fetchTop...: async () => {
+    //fetchUpcoming: async () => {
   getTitleInformation: (id: string) => {
     const title = get().mediaList.results.find((title) => title.id === id);
     return title;
@@ -91,4 +110,18 @@ export const useMovieStore = create<State>()((set, get) => ({
     set({ actors: data.results });
     set({ status: "success" });
   },
+  getTrailerById: async (id: string) => {
+    const { data } = await axiosClient.get<TrailerResponse>(`/titles/${id}`, {
+      params: {
+        info: "trailer",
+      },
+    });
+    return data.results.trailer;
+  }
 }));
+
+//"top_rated_english_250"
+//most_pop_series
+
+
+///titles/x/upcoming

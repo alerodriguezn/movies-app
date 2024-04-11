@@ -2,29 +2,32 @@ import { useMovieStore } from "@/store/movies-store";
 import { useLocalSearchParams } from "expo-router";
 import { Text, Image, Dimensions, View, ScrollView } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ExtendedCast } from "@/interfaces/cast";
 import { Title } from "@/interfaces/movie";
-import Carousel from "react-native-reanimated-carousel";
-import { EpisodeItem } from "@/components/series/EpisodeItem";
+import { WebView } from "react-native-webview";
 
 let { width, height } = Dimensions.get("window");
 
 export default function Page() {
- 
   const getExtendedCast = useMovieStore((state) => state.getExtendedCast);
   const getTitleInfo = useMovieStore((state) => state.getTitleInfo);
- 
+  const getTrailer = useMovieStore((state) => state.getTrailerById);
+
   const { id } = useLocalSearchParams();
   const [extendedCast, setExtendedCast] = useState<ExtendedCast>();
   const [title, setTitle] = useState<Title>();
-  
+  const [trailer, setTrailer] = useState<string>();
+
   useEffect(() => {
     getExtendedCast(id as string).then((data) => {
       setExtendedCast(data);
     });
     getTitleInfo(id as string).then((data) => {
       setTitle(data);
+    });
+    getTrailer(id as string).then((data) => {
+      setTrailer(data);
     });
   }, [id]);
 
@@ -55,7 +58,6 @@ export default function Page() {
         ))}
       </View>
 
-
       <Text className="text-center text-white font-bold mt-4">
         {" "}
         {title?.releaseDate.year} • {title?.titleType.text}{" "}
@@ -72,7 +74,7 @@ export default function Page() {
         <AntDesign name="star" size={18} color="yellow" />
       </View>
 
-     
+      <WebView className="w-full h-64" source={{ uri: trailer! }} />
 
       <View className="border-y-2 border-slate-800 mt-4 ">
         <Text className=" text-2xl pl-4 mt-4 font-bold text-center text-amber-500  ">
