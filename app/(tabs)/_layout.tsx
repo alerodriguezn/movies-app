@@ -90,8 +90,55 @@ export default function TabLayout() {
       <Tabs.Screen
         name="two"
         options={{
-          title: "Tab Two",
+          title: "Actors",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerRight: () => {
+            if (isAuthenticated) {
+              return (
+                <Pressable
+                  onPress={() => {
+                    router.push("/login");
+                  }}
+                >
+                  <FontAwesome
+                    name="sign-out"
+                    size={25}
+                    color="white"
+                    style={{ marginRight: 15 }}
+                  />
+                </Pressable>
+              );
+            } else {
+              return (
+                <Pressable
+                  onPress={() => {
+                    router.push("/login");
+                  }}
+                >
+                  <FontAwesome
+                    name="sign-in"
+                    size={25}
+                    color="white"
+                    style={{ marginRight: 15 }}
+                  />
+                </Pressable>
+              );
+            }
+          },
+          headerLeft: () => (
+            <Link href="/login" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <AntDesign
+                    name="menufold"
+                    size={25}
+                    color="white"
+                    style={{ marginLeft: 15 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
+          ),
         }}
       />
     </Tabs>

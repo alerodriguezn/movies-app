@@ -20,15 +20,17 @@ export interface Trailer {
 interface State {
   mediaList: MediaList;
   topBoxOffice: MediaList;
-  //upcoming: MediaList;
-  //top....: MediaList;
+  topRatedEnglish: MediaList;
+  upcoming: MediaList;
+  mostPopSeries: MediaList;
 
-  actors: Actor[];
+  
   status: "idle" | "loading" | "success" | "error";
   fetchTitles: () => void;
   fetchTopBoxOffice: () => void;
-  //fetchTop...: () => void;
-  //fetchUpcoming: () => void;
+  fetchTopRatedEnglish: () => void;
+  fetchUpcoming: () => void;
+  fetchmostPopSeries:() => void;
   getTitleInformation: (id: string) => Title | undefined;
   getExtendedCast: (id: string) => Promise<ExtendedCast>;
   getTitleInfo: (id: string) => Promise<Title>;
@@ -40,7 +42,11 @@ interface State {
 export const useMovieStore = create<State>()((set, get) => ({
   mediaList: {} as MediaList,
   topBoxOffice: {} as MediaList,
-  actors: [] as Actor[],
+  topRatedEnglish: {} as MediaList,
+  mostPopSeries: {} as MediaList,
+  upcoming: {} as MediaList,
+
+  
   status: "idle",
   fetchTitles: async () => {
     set({ status: "loading" });
@@ -62,8 +68,38 @@ export const useMovieStore = create<State>()((set, get) => ({
     set({ topBoxOffice: data });
     set({ status: "success" });
   },
-  // fetchTop...: async () => {
-    //fetchUpcoming: async () => {
+  fetchTopRatedEnglish: async () => {
+    set({ status: "loading" });
+    const { data } = await axiosClient.get<MediaList>("/titles/random", {
+      params: {
+        list: "top_rated_english_250",
+      },
+    });
+    set({ topRatedEnglish: data });
+    set({ status: "success" });
+  },
+  fetchmostPopSeries: async () => {
+    set({ status: "loading" });
+    const { data } = await axiosClient.get<MediaList>("/titles/random", {
+      params: {
+        list: "most_pop_series",
+      },
+    });
+    set({ mostPopSeries: data });
+    set({ status: "success" });
+  },
+
+  fetchUpcoming: async () => {
+    set({ status: "loading" });
+    const { data } = await axiosClient.get<MediaList>("titles/x/upcoming", {
+      params: {
+        info: "base_info",
+      },
+    });
+    set({ upcoming: data });
+    set({ status: "success" });
+  },
+
   getTitleInformation: (id: string) => {
     const title = get().mediaList.results.find((title) => title.id === id);
     return title;
@@ -104,12 +140,7 @@ export const useMovieStore = create<State>()((set, get) => ({
     const episode = data.results;
     return episode;
   },
-  fetchActor: async () => {
-    set({ status: "loading" });
-    const { data } = await axiosClient.get<ActorsList>("/actors/random");
-    set({ actors: data.results });
-    set({ status: "success" });
-  },
+  
   getTrailerById: async (id: string) => {
     const { data } = await axiosClient.get<TrailerResponse>(`/titles/${id}`, {
       params: {
@@ -120,8 +151,4 @@ export const useMovieStore = create<State>()((set, get) => ({
   }
 }));
 
-//"top_rated_english_250"
-//most_pop_series
 
-
-///titles/x/upcoming

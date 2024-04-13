@@ -10,13 +10,21 @@ export default function TabOneScreen() {
   const fetchTitles = useMovieStore((state) => state.fetchTitles);
   const fetchTopBoxOffice = useMovieStore((state) => state.fetchTopBoxOffice);
   const topBoxOffice = useMovieStore((state) => state.topBoxOffice);
+  const fetchMostPopSeries= useMovieStore((state) => state.fetchmostPopSeries);
+  const mostPopSeries = useMovieStore((state) => state.mostPopSeries);
+  const fetchRatedEnglish= useMovieStore((state) => state.fetchTopRatedEnglish);
+  const topRatedEnglish = useMovieStore((state) => state.topRatedEnglish);
+  const fetchUpComing= useMovieStore((state) => state.fetchUpcoming);
+  const UpComing = useMovieStore((state) => state.upcoming);
 
   const status = useMovieStore((state) => state.status);
 
   useEffect(() => {
     fetchTitles();
     fetchTopBoxOffice();
-    // fetch...........
+    fetchMostPopSeries();
+    fetchRatedEnglish();
+    fetchUpComing();
   }, []);
 
   return (
@@ -30,8 +38,14 @@ export default function TabOneScreen() {
           className=""
         >
           <TitleList data={mediaList} title="Top Series" />
-          {/* TitleList data={topRated]} */}
+          <TitleList data={mostPopSeries} title="Most Pop Series" />
           <TitleList data={topBoxOffice} title="Top Box Office" />
+          <TitleList data={topRatedEnglish} title="Top Rated English" />
+          <TitleList data={UpComing} title="UpComing" />
+          
+
+
+
         </ScrollView>
       )}
     </View>

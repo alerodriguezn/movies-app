@@ -9,8 +9,8 @@ export interface Actor {
     _id:               string;
     nconst:            string;
     primaryName:       string;
-    birthYear:         number;
-    deathYear:         number;
+    birthYear:         number | string;
+    deathYear:         number | string;
     primaryProfession: string;
     knownForTitles:    string;
 }
