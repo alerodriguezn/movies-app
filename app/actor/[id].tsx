@@ -1,11 +1,8 @@
 import { useActorStore } from "@/store/actors-store";
-//import { useMovieStore } from "@/store/movies-store";
 import { useLocalSearchParams } from "expo-router";
 import { Text, Image, Dimensions, View, ScrollView } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { Actor } from "@/interfaces/actor";
-//import { ExtendedCast } from "@/interfaces/cast";
 import { Title } from "@/interfaces/movie";
 import { useMovieStore } from "@/store/movies-store";
 import { ActorMoviesList} from '../../components/actors/moviesActors';
@@ -33,6 +30,8 @@ export default function Page() {
     state.getActorInformation(id as string)
   );
 
+
+
   const getMovies = useActorStore((state) =>
     state.getMovies(id as string)
   );
@@ -50,6 +49,8 @@ export default function Page() {
 
     fetchData();
   }, [getMovies, getTitleInfo]);
+
+  
 
   
 

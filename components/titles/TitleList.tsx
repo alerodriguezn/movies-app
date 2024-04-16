@@ -60,6 +60,8 @@ const MovieCard = ({ item }: MovieCardProps) => {
             }}
             alt="Hello"
           />
+
+          
         ) : (
           <View
             style={{
