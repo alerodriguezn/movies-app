@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Link, Tabs, router } from "expo-router";
 import { Pressable } from "react-native";
@@ -10,6 +10,7 @@ import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { useNavigation } from "expo-router";
 import { getAuth } from "firebase/auth";
 import useAuthStore from "@/store/user-store";
+import { signOut } from "firebase/auth";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -23,6 +24,17 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const changeIsAuthenticated = useAuthStore((state) => state.changeIsAuthenticated);
+
+
+  const handleSignOut = () => {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      console.log("Signed out");
+    });
+    changeIsAuthenticated();
+
+  }
 
   return (
     <Tabs
@@ -43,7 +55,7 @@ export default function TabLayout() {
               return (
                 <Pressable
                   onPress={() => {
-                    router.push("/login");
+                    handleSignOut();
                   }}
                 >
                   <FontAwesome

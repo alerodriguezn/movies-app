@@ -9,6 +9,7 @@ interface AuthState {
   isAuthenticated: boolean;
   user: null | User;
   setSession: (user: User) => void;
+  changeIsAuthenticated: () => void;
 }
 
 const useAuthStore = create<AuthState>()(
@@ -18,6 +19,7 @@ const useAuthStore = create<AuthState>()(
       user: null,
       token: null,
       setSession: (user: User) => set((state) => ({ ...state, isAuthenticated: true, user })),
+      changeIsAuthenticated: () => set((state) => ({ ...state, isAuthenticated: !state.isAuthenticated })),
       
     }),
     {

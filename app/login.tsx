@@ -52,6 +52,10 @@ export default function ModalScreen() {
       });
   };
 
+  const handleSingOut = () => {
+    
+  }
+
   //If user is logged in, redirect to home
   if( auth.currentUser ) {
     console.log(auth.currentUser);
