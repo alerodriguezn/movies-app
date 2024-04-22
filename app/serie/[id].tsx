@@ -8,7 +8,8 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Fontisto } from "@expo/vector-icons";
+
 import { useEffect, useState } from "react";
 import { ExtendedCast } from "@/interfaces/cast";
 import { Title } from "@/interfaces/movie";
@@ -23,6 +24,9 @@ export default function Page() {
   const getExtendedCast = useMovieStore((state) => state.getExtendedCast);
   const getTitleInfo = useMovieStore((state) => state.getTitleInfo);
   const getSeasonsInfo = useMovieStore((state) => state.getSeasonsInfo);
+  const favoriteMovies = useMovieStore((state) => state.favoritesMovies);
+  const addFavorite = useMovieStore((state) => state.addFavorite);
+  const deleteFavorite = useMovieStore((state) => state.removeFavorite);
 
   const [extendedCast, setExtendedCast] = useState<ExtendedCast>();
   const [title, setTitle] = useState<Title>();
@@ -40,6 +44,16 @@ export default function Page() {
     });
   }, [id]);
 
+  const handleOnAddFavorite = () => {
+    addFavorite(id as string);
+    console.log("Added to favorites", id);
+  }
+
+  const handleOnRemoveFavorite = () => {
+    deleteFavorite(id as string);
+
+  }
+
   return (
     <ScrollView className="flex-1 bg-[#030418]">
       <Text className="text-white text-center font-bold text-2xl my-4">
@@ -53,6 +67,33 @@ export default function Page() {
           borderRadius: 20,
         }}
       />
+
+      {
+        favoriteMovies.includes(title?.id!) ? (
+          <Pressable 
+            className="bg-red-600 p-3 rounded-md w-full mt-2 flex flex-row justify-center items-center "
+            onPress={handleOnRemoveFavorite}
+          >
+            <Fontisto name="favorite" size={15} color="white" />
+            <Text className="text-white font-semibold text-center ml-2">
+              Remove from Watchlist
+            </Text>
+          </Pressable>
+        ) : (
+          <Pressable 
+            className="bg-green-600 p-3 rounded-md w-full mt-2 flex flex-row justify-center items-center "
+            onPress={handleOnAddFavorite}
+          >
+            <Fontisto name="favorite" size={15} color="white" />
+            <Text className="text-white font-semibold text-center ml-2">
+              Save to Watchlist
+            </Text>
+          </Pressable>
+        ) 
+        
+
+      }
+
 
       <View className="flex flex-row flex-wrap gap-2 mt-1 pl-4">
         {title?.genres.genres.map((genre) => (
@@ -85,14 +126,17 @@ export default function Page() {
       <Text className="text-2xl text-white font-bold pl-4 mt-4">Seasons:</Text>
       <ScrollView
         className="w-full h-44 pl-4"
-       
         contentContainerStyle={{ paddingBottom: 10 }}
       >
         {seasons?.results.map((season, index) => (
-          <View key={season.tconst} className="text-white flex flex-row justify-between items-center mr-4 p-2">
-           
+          <View
+            key={season.tconst}
+            className="text-white flex flex-row justify-between items-center mr-4 p-2"
+          >
             <Pressable className="bg-amber-600 p-1 rounded-md w-full ">
-              <Text className="text-white font-semibold text-center"  >Season {season.seasonNumber} - Episode {season.episodeNumber}</Text>
+              <Text className="text-white font-semibold text-center">
+                Season {season.seasonNumber} - Episode {season.episodeNumber}
+              </Text>
             </Pressable>
           </View>
         ))}

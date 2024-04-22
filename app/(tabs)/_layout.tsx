@@ -72,7 +72,7 @@ export default function TabLayout() {
             }
           },
           headerLeft: () => (
-            <Link href="/login" asChild>
+            <Link href="/favorites" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <AntDesign

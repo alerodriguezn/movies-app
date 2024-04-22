@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { MediaList, Title, TitleResult } from "@/interfaces/movie";
 import axiosClient from "@/config/axiosClient";
-import { ActorsList, Actor } from "@/interfaces/actor";
 import { ExtendedCast } from "@/interfaces/cast";
 import { Seasons } from "@/interfaces/serie";
 
@@ -23,8 +22,8 @@ interface State {
   topRatedEnglish: MediaList;
   upcoming: MediaList;
   mostPopSeries: MediaList;
+  favoritesMovies: string[];
 
-  
   status: "idle" | "loading" | "success" | "error";
   fetchTitles: () => void;
   fetchTopBoxOffice: () => void;
@@ -37,6 +36,9 @@ interface State {
   getSeasonsInfo: (id: string) => Promise<Seasons>;
   getEpisodeInfo: (id: string) => Promise<Title>;
   getTrailerById: (id: string) => Promise<string>;
+  addFavorite: (id: string) => void;
+  removeFavorite: (id: string) => void;
+
 }
 
 export const useMovieStore = create<State>()((set, get) => ({
@@ -45,8 +47,8 @@ export const useMovieStore = create<State>()((set, get) => ({
   topRatedEnglish: {} as MediaList,
   mostPopSeries: {} as MediaList,
   upcoming: {} as MediaList,
+  favoritesMovies: [] as string[],
 
-  
   status: "idle",
   fetchTitles: async () => {
     set({ status: "loading" });
@@ -148,7 +150,23 @@ export const useMovieStore = create<State>()((set, get) => ({
       },
     });
     return data.results.trailer;
-  }
+  },
+
+  addFavorite: (id: string) => {
+    const favorites = get().favoritesMovies;
+    const newFavorites = [...favorites, id];
+    set({ favoritesMovies: newFavorites });
+    console.log("Added to favorites", get().favoritesMovies);
+  },
+
+  removeFavorite: (id: string) => {
+    const favorites = get().favoritesMovies;
+    const newFavorites = favorites.filter((fav) => fav !== id);
+    set({ favoritesMovies: newFavorites });
+  },
+
+  
+
 }));
 
 
