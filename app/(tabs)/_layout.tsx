@@ -49,7 +49,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Movies",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="film" color={color} />,
           headerRight: () => {
             if (isAuthenticated) {
               return (
@@ -103,7 +103,61 @@ export default function TabLayout() {
         name="two"
         options={{
           title: "Actors",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="bars" color={color} />,
+          headerRight: () => {
+            if (isAuthenticated) {
+              return (
+                <Pressable
+                  onPress={() => {
+                    router.push("/login");
+                  }}
+                >
+                  <FontAwesome
+                    name="sign-out"
+                    size={25}
+                    color="white"
+                    style={{ marginRight: 15 }}
+                  />
+                </Pressable>
+              );
+            } else {
+              return (
+                <Pressable
+                  onPress={() => {
+                    router.push("/login");
+                  }}
+                >
+                  <FontAwesome
+                    name="sign-in"
+                    size={25}
+                    color="white"
+                    style={{ marginRight: 15 }}
+                  />
+                </Pressable>
+              );
+            }
+          },
+          headerLeft: () => (
+            <Link href="/login" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <AntDesign
+                    name="menufold"
+                    size={25}
+                    color="white"
+                    style={{ marginLeft: 15 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="three"
+        options={{
+          title: "Search",
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
           headerRight: () => {
             if (isAuthenticated) {
               return (

@@ -48,21 +48,21 @@ export default function Page() {
         BirthYear:
       </Text>
       <Text className="text-white font-semibold text-sm mt-4 px-4">
-        {actor?.birthYear === "N" ? actor?.birthYear : "No info"}
+        {actor?.birthYear !== "\\N" ? actor?.birthYear : "No info"}
       </Text>
 
       <Text className=" text-2xl pl-4 mt-4 font-bold text-center text-amber-500  ">
         DeathYear:
       </Text>
       <Text className="text-white font-semibold text-sm mt-4 px-4">
-        {actor?.deathYear === "N" ? actor?.deathYear : "No info"}
+        {actor?.deathYear !== "\\N" ? actor?.deathYear : "No info"}
       </Text>
 
       <Text className=" text-2xl pl-4 mt-4 font-bold text-center text-amber-500  ">
         Primary Profession:
       </Text>
       <Text className="text-white font-semibold text-sm mt-4 px-4 capitalize">
-        {actor?.primaryProfession !== "N"
+        {actor?.primaryProfession !== "\\N"
           ? actor?.primaryProfession
           : "No info"}
       </Text>
