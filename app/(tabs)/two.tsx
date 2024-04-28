@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { useActorStore } from "@/store/actors-store";
@@ -35,7 +36,7 @@ export default function TabTwoScreen() {
   return (
     <View className="flex-1 bg-[#030418] ">
       {status === "loading" ? (
-        <Text>Loading...</Text>
+        <ActivityIndicator className="mt-20" size="large" color="#00ff00" />
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}

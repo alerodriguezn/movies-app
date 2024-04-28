@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 import { Link, Tabs, router } from "expo-router";
 import { Pressable } from "react-native";
 
-import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import { AntDesign, FontAwesome, Fontisto,  } from '@expo/vector-icons';
+
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
@@ -48,7 +49,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Movies",
+          title: "Movies & Series",
           tabBarIcon: ({ color }) => <TabBarIcon name="film" color={color} />,
           headerRight: () => {
             if (isAuthenticated) {
@@ -87,12 +88,7 @@ export default function TabLayout() {
             <Link href="/favorites" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <AntDesign
-                    name="menufold"
-                    size={25}
-                    color="white"
-                    style={{ marginLeft: 15 }}
-                  />
+                  <Fontisto name="favorite" size={24} color="white" style={{ marginLeft: 15 }} />
                 )}
               </Pressable>
             </Link>
@@ -138,15 +134,10 @@ export default function TabLayout() {
             }
           },
           headerLeft: () => (
-            <Link href="/login" asChild>
+            <Link href="/favorites" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <AntDesign
-                    name="menufold"
-                    size={25}
-                    color="white"
-                    style={{ marginLeft: 15 }}
-                  />
+                  <Fontisto name="favorite" size={24} color="white" style={{ marginLeft: 15 }} />
                 )}
               </Pressable>
             </Link>
@@ -157,6 +148,55 @@ export default function TabLayout() {
         name="three"
         options={{
           title: "Search",
+          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
+          headerRight: () => {
+            if (isAuthenticated) {
+              return (
+                <Pressable
+                  onPress={() => {
+                    router.push("/login");
+                  }}
+                >
+                  <FontAwesome
+                    name="sign-out"
+                    size={25}
+                    color="white"
+                    style={{ marginRight: 15 }}
+                  />
+                </Pressable>
+              );
+            } else {
+              return (
+                <Pressable
+                  onPress={() => {
+                    router.push("/login");
+                  }}
+                >
+                  <FontAwesome
+                    name="sign-in"
+                    size={25}
+                    color="white"
+                    style={{ marginRight: 15 }}
+                  />
+                </Pressable>
+              );
+            }
+          },
+          headerLeft: () => (
+            <Link href="/favorites" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <Fontisto name="favorite" size={24} color="white" style={{ marginLeft: 15 }} />
+                )}
+              </Pressable>
+            </Link>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="four"
+        options={{
+          title: "Search By Title",
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
           headerRight: () => {
             if (isAuthenticated) {
@@ -192,15 +232,10 @@ export default function TabLayout() {
             }
           },
           headerLeft: () => (
-            <Link href="/login" asChild>
+            <Link href="/favorites" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <AntDesign
-                    name="menufold"
-                    size={25}
-                    color="white"
-                    style={{ marginLeft: 15 }}
-                  />
+                  <Fontisto name="favorite" size={24} color="white" style={{ marginLeft: 15 }} />
                 )}
               </Pressable>
             </Link>

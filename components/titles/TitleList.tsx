@@ -4,9 +4,9 @@ import { View, Text } from "../Themed";
 import Carousel from "react-native-reanimated-carousel";
 import {
   Image,
-  TouchableWithoutFeedback,
   Dimensions,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { MediaList, Title } from "@/interfaces/movie";
 import { router } from "expo-router";
@@ -19,11 +19,14 @@ interface TitleListProps {
 }
 
 export const TitleList = ({ data, title }: TitleListProps) => {
+
+
   return (
     <View className="mb-8 flex  bg-transparent">
       <Text className="text-white text-xl mx-4 mb-5 mt-3 font-bold text-left">
-        {title}
+        {title} 
       </Text>
+      
       <Carousel
         data={data.results}
         renderItem={({ item }) => <MovieCard item={item} />}
@@ -71,9 +74,14 @@ const MovieCard = ({ item }: MovieCardProps) => {
             width: width * 0.6,
             height: height * 0.4,
             borderRadius: 20,
-            backgroundColor: "gray",
+            backgroundColor: "transparent",
+            display: "flex",
+            justifyContent: "center",
           }}
-        />
+        >
+            <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+      
       )}
     </Pressable>
   );

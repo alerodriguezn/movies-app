@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, ActivityIndicator } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { useMovieStore } from "@/store/movies-store";
 import { TitleList } from "../../components/titles/TitleList";
@@ -30,7 +30,7 @@ export default function TabOneScreen() {
   return (
     <View className="flex-1 bg-[#030418] ">
       {status === "loading" ? (
-        <Text>Loading...</Text>
+        <ActivityIndicator className="mt-20" size="large" color="#00ff00" />
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}

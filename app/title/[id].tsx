@@ -74,7 +74,13 @@ export default function Page() {
         <AntDesign name="star" size={18} color="yellow" />
       </View>
 
-      <WebView className="w-full h-64" source={{ uri: trailer! }} />
+        {
+          trailer && (
+            <WebView className="w-full h-64" source={{ uri: trailer! }} />
+          )
+        }
+  
+      
 
       <View className="border-y-2 border-slate-800 mt-4 ">
         <Text className=" text-2xl pl-4 mt-4 font-bold text-center text-amber-500  ">

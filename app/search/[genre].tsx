@@ -4,17 +4,8 @@ import { Dimensions, View, ScrollView } from "react-native";
 
 import { useEffect, useState } from "react";
 import { ResultList } from "../../components/resultSearch/ResultList";
-import { MediaList } from "@/interfaces/movie"
+import { MediaList } from "@/interfaces/movie";
 
-
-
-
-
-
-
-
-
-let { width, height } = Dimensions.get("window");
 
 export default function Page() {
   const getTitlesbyGenre = usefilter((state) => state.fetchSearchbyGenre);
@@ -26,37 +17,17 @@ export default function Page() {
     getTitlesbyGenre(genre as string).then((data) => {
       setTitlesbyGenre(data);
     });
-    
   }, [genre]);
 
-  
-  
-
-
-
-  
   return (
     <View className="flex-1 bg-[#030418] ">
-      
-       
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 10 }}
-          className=""
-        >
-
-      <ResultList data={TitlesbyGenre} title= "Resultados de Busqueda"/>
-      
-
-      
-
-      
-      
-
-
-
-    </ScrollView>
-
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 10 }}
+        className=""
+      >
+        <ResultList data={TitlesbyGenre} title="Resultados de Busqueda" />
+      </ScrollView>
     </View>
   );
 }
